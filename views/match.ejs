@@ -1,0 +1,57 @@
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> Your Match</h1>
+        
+    </div>
+
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-6">
+	           <h2>Tats</h2>
+				<%if(locals.match.tats){%>
+            	<% match.tats.forEach(function(tat) { %>
+						<% match.players.forEach(function(player) { %>
+						<% if(tat.player.toString() == player._id.toString()){ %>
+									<li><%= tat.title %> (<%= tat._id %>) Player:<%= player.local.email %> Points: <%= tat.pointValue %></li>
+							  <% } %>
+						<% }); %>
+				<% }); %>
+			
+				
+				
+				<% } %>
+				<strong>Create Tat</strong>
+				<div class="form-group">
+				<form action="/api/tat" method="post">
+				<label for="name">Title</label>
+				<input class="form-control" name="title" type="text">
+				<label for="name">Point Value</label>
+				<input class="form-control" name="pointValue" type="text" size="5">
+				<input class="form-control" name="player" type="hidden" value=<%= user._id %>>
+				<input class="form-control" name="match" type="hidden" value=<%= match._id %>>
+				
+				<button type="submit" class="btn btn-med">Create Tat</button>
+				</form>
+				</div>
+				<hr>
+				
+            
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

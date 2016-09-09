@@ -1,0 +1,51 @@
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> Matches Page</h1>
+        
+    </div>
+
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-6">
+				<%if(locals.matches){%>
+            	<% matches.forEach(function(match) { %>
+				        <li><%= match.name %> (<%= match._id %>)</li>
+				<% }); %>
+				<% } %>
+				<strong>Create Match (select two players)</strong>
+				<div class="form-group">
+				<form action="/matches" method="post">
+				<label for="name">Name</label>
+				<input class="form-control" name="name" type="text">
+				<br><br>
+				<label for="players">Players</label>
+				<select class="form-control" name="players" multiple="true">
+                <% players.forEach(function(player) { %>
+				        <option value=<%= player._id %>><%= player.local.email %></option>
+				<% }); %>
+				</select><br />
+				<button type="submit" class="btn btn-med">Create Match</button>
+				</form>
+				</div>
+				<hr>
+				
+            
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
