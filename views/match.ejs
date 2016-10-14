@@ -22,6 +22,7 @@
 	           <h2>Tats</h2>
 				<%if(locals.match.tats){%>
             	<% match.tats.forEach(function(tat) { %>
+						
 						<% match.players.forEach(function(player) { %>
 						<% if(tat.player.toString() == player._id.toString()){ %>
 									<li><%= tat.title %> (<%= tat._id %>) Player:<%= player.local.email %> Points: <%= tat.pointValue %></li>
@@ -32,7 +33,7 @@
 				
 				
 				<% } %>
-				<strong>Create Tat</strong>
+				<strong>Create Tat(s)</strong>
 				<div class="form-group">
 				<form action="/api/tat" method="post">
 				<label for="name">Title</label>

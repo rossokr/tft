@@ -59,7 +59,7 @@ module.exports = function(app, passport) {
 	// =====================================
 	//value="57b4860e53344b24d49b84b9"
 	//get all players
-	app.get("/api/player",function(req,res){
+	app.get("/api/player",isLoggedIn,function(req,res){
 	        var response = {};
 	        Player.find({},function(err,data){
 	        //console.log("got all players?");
@@ -73,7 +73,7 @@ module.exports = function(app, passport) {
 	        });
 	});
 	//get one player
-	app.get("/api/player/:id",function(req,res){
+	app.get("/api/player/:id",isLoggedIn,function(req,res){
 	        var response = {};
 	        Player.findById(req.params.id,function(err,data){
 	        // This will run Mongo Query to fetch data based on ID.
@@ -86,7 +86,7 @@ module.exports = function(app, passport) {
 			});
 	 });
 	//get player and all his matches
-	app.get("/api/player/:id/matches",function(req,res){
+	app.get("/api/player/:id/matches",isLoggedIn,function(req,res){
 			Player.findById(req.params.id,function(err,data){
 	        // This will run Mongo Query to fetch data based on ID.
 	            if(err) {
@@ -118,7 +118,7 @@ module.exports = function(app, passport) {
 	// MATCH
 	//=======================================
 	//get match
-	app.get("/api/match/:id",function(req,res){
+	app.get("/api/match/:id",isLoggedIn, function(req,res){
 	        var response = {};
 	        Match.findById(req.params.id,function(err,data){
 	        //console.log("got all players?");
@@ -132,7 +132,7 @@ module.exports = function(app, passport) {
 	        });
 	});
 	//add match
-	app.post('/api/match', function(req,res){
+	app.post('/api/match', isLoggedIn,function(req,res){
 		var response = {};
 		var match = new Match();
 		var players = []
@@ -155,7 +155,7 @@ module.exports = function(app, passport) {
 		
 	});
 	//delete match
-	app.delete("/api/match/:id",function(req,res){
+	app.delete("/api/match/:id",isLoggedIn,function(req,res){
 	        var response = {};
 	        Match.findById(req.params.id,function(err,data){
 	        //c
@@ -248,12 +248,14 @@ module.exports = function(app, passport) {
 		Match.find({'players': req.user._id})
 			.populate('tats') 
 			.populate('players')
+			.sort({dateCreated: 'desc'})
 			.exec(function (err, matches) {
 			  if (err){
 				console.log("error getting matches")
 				res = {"error" : true,"message" : "Error fetching data"};
 			  }
 			 else{
+				console.log(matches)
 				res.render('profile.ejs', {
 		            player : req.user, // get the player out of session and pass to template
 					matches : matches
@@ -268,7 +270,7 @@ module.exports = function(app, passport) {
 	// ============================
 	// ADMIN ======================
 	//view/create matches --ADMIN only
-	app.get("/matches",function(req,res){
+	app.get("/matches",isLoggedIn,function(req,res){
 		console.log("get matches");
 		Player.find({},function(err,data){
 			if(err) {
@@ -278,7 +280,7 @@ module.exports = function(app, passport) {
 				if(err) {
 			       response = {"error" : true,"message" : "Error fetching data"};
 			    } else {
-                		res.render('match.ejs', {
+                		res.render('admin_match.ejs', {
 		            		players : data,
 							matches: matches
 		        		});
@@ -287,7 +289,7 @@ module.exports = function(app, passport) {
             }
         });
 	});
-	app.post('/matches', function(req,res){
+	app.post('/matches', isLoggedIn,function(req,res){
 		console.log("add match"+req.body.players);
 	    var match = new Match();
 		var players = []
@@ -305,7 +307,7 @@ module.exports = function(app, passport) {
 				if(err) {
 			       response = {"error" : true,"message" : "Error fetching data"};
 			    } else {
-                		res.render('match.ejs', {
+                		res.render('admin_match.ejs', {
 		            		players : data,
 							matches: matches
 		        		});

@@ -32,7 +32,7 @@
 				<h3>Matches</h3>
 					<%if(locals.matches){%>
 	            	<% matches.forEach(function(match) { %>
-					        <a href="/match/<%= match._id %>"><%= match.name %> (<%= match._id %>)</a><br />
+					        <a href="/match/<%= match._id %>"><%= match.name %> (<%= match._id %>)</a><%= match.dateCreated %><br />
 					<% }); %>
 					<% } %>
 
